@@ -6,5 +6,4 @@ public record ColaboradorDTO (long id, String nome){
         this(colaborador.getId(), colaborador.getNome());
     }
 
-    
 }

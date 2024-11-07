@@ -2,7 +2,7 @@ package application.model;
 
 import java.time.LocalDate;
 
-//import application.record.TarefaDTO;
+import application.record.TarefaDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,10 +14,10 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "tarefa")
+@Getter
+@Setter
 public class Tarefa {
     @Id
-    @Getter
-    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(nullable = false)
@@ -28,12 +28,12 @@ public class Tarefa {
     private LocalDate dataInicio;
     private LocalDate dataConclusao; 
 
-    /*public Tarefa(TarefaDTO dados){
+    public Tarefa(TarefaDTO dados){
         this.id = dados.id();
         this.titulo = dados.titulo();
         this.dataCriacao = dados.dataCriacao();
         this.dataInicio = dados.dataInicio();
         this.dataConclusao = dados.dataConclusao();
 
-    } */
+    }
 }
