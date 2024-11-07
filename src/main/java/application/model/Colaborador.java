@@ -21,6 +21,7 @@ public class Colaborador {
     @Column(nullable = false, unique = true)
     private String nome;
 
+
     public Colaborador(ColaboradorDTO dados){
         this.id = dados.id();
         this.nome = dados.nome();
