@@ -1,5 +1,9 @@
 package application.repository;
 
-public class TarefaRepository {
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import application.model.Tarefa;
+
+public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
+    Tarefa findByTitulo(String titulo);
 }
