@@ -25,12 +25,12 @@ public class ColaboradorService {
 
     public ColaboradorDTO insert(ColaboradorDTO colaborador) {
         Colaborador resultado = colaboradorRepo.findByNome(colaborador.nome());
-        if (resultado != null) {
+        if (resultado == null) {
             throw new ResponseStatusException(
-                HttpStatus.CONFLICT, "Colaborador já existente."
+                HttpStatus.NOT_FOUND, "Colaborador não existente."
             ); 
         }
-    
+        
         Colaborador novoColaborador = new Colaborador(colaborador);
         colaboradorRepo.save(novoColaborador);
         return colaborador;

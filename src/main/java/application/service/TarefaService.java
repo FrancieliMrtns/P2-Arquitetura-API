@@ -4,10 +4,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import application.model.Tarefa;
 import application.record.TarefaDTO;
 import application.repository.TarefaRepository;
+import application.repository.ColaboradorRepository;
 
 @Service
 public class TarefaService {
@@ -20,5 +24,9 @@ public class TarefaService {
             .collect(Collectors.toList());
     }
 
-    
+
 }
+    
+    
+   
+
