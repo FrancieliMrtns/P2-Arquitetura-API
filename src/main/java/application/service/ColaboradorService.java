@@ -35,4 +35,14 @@ public class ColaboradorService {
         colaboradorRepo.save(novoColaborador);
         return colaborador;
     }
+
+    public ColaboradorDTO update(long id, ColaboradorDTO colaborador) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
+    public void deleteById(long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+    }
 }
