@@ -23,12 +23,13 @@ public class ColaboradoresController {
     public Iterable<ColaboradorDTO>list(){
         return colaboradorSrv.findAll();
     }
-/* 
-    @GetMapping("/colaboradores/{id}")
-    public ColaboradorDTO findOne(@PathVariable long id){
-        return ColaboradorService.findById(id);
+ 
+    
+    @GetMapping("/{id}")
+    public ColaboradorDTO findOne(@PathVariable long id) {
+        return colaboradorSrv.findById(id); 
     }
-*/
+
     @PostMapping
     public ColaboradorDTO insert(@RequestBody ColaboradorDTO colaborador){
         return colaboradorSrv.insert(colaborador);

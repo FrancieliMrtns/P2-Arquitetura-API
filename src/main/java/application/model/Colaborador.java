@@ -25,7 +25,8 @@ public class Colaborador {
         joinColumns = @JoinColumn(name = "id_colaborador"),
         inverseJoinColumns = @JoinColumn(name = "id_tarefa")
     )
-    private Set<Tarefa> tarefas; // Relacionamento correto com Tarefa
+    private Set<Tarefa> tarefas;
+    
 
     public Colaborador() {}
 

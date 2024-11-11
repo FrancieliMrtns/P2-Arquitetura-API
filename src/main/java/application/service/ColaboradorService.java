@@ -11,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 import application.model.Colaborador;
 import application.record.ColaboradorDTO;
 import application.repository.ColaboradorRepository;
-
 @Service
 public class ColaboradorService {
     @Autowired
@@ -23,26 +22,40 @@ public class ColaboradorService {
             .collect(Collectors.toList());
     }
 
+    public ColaboradorDTO findById(long id) {
+        Colaborador colaborador = colaboradorRepo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Colaborador não encontrado"));
+
+        return new ColaboradorDTO(colaborador.getId(), colaborador.getNome());
+    }
+
     public ColaboradorDTO insert(ColaboradorDTO colaborador) {
         Colaborador resultado = colaboradorRepo.findByNome(colaborador.nome());
-        if (resultado == null) {
+        if (resultado != null) {
             throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Colaborador não existente."
-            ); 
+                HttpStatus.CONFLICT, "Colaborador já existente."
+            );
         }
-        
+
         Colaborador novoColaborador = new Colaborador(colaborador);
         colaboradorRepo.save(novoColaborador);
         return colaborador;
     }
 
     public ColaboradorDTO update(long id, ColaboradorDTO colaborador) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        Colaborador existingColaborador = colaboradorRepo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Colaborador não encontrado"));
+
+        existingColaborador.setNome(colaborador.nome());
+        colaboradorRepo.save(existingColaborador);
+        return new ColaboradorDTO(existingColaborador.getId(), existingColaborador.getNome());
     }
 
     public void deleteById(long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+        if (!colaboradorRepo.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Colaborador não encontrado");
+        }
+
+        colaboradorRepo.deleteById(id);
     }
 }
