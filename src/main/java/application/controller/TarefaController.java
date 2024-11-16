@@ -17,7 +17,12 @@ public class TarefaController {
     @Autowired
     private TarefaService tarefaSrv;
 
-    @GetMapping
+    @PostMapping("/tarefas")
+    public TarefaDTO insert(@RequestBody TarefaDTO tarefa){
+        return tarefaSrv.inserirTarefa(tarefa);
+    }
+
+    @GetMapping("/tarefas")
     public Iterable<TarefaDTO> findAll(){
         return tarefaSrv.findAll();
     }
@@ -26,11 +31,6 @@ public class TarefaController {
     public TarefaDTO findOne(@PathVariable long id){
         return tarefaSrv.findById(id);
     }*/
-
-    @PostMapping
-    public TarefaDTO insert(@RequestBody TarefaDTO tarefa){
-        return tarefaSrv.inserirTarefa(tarefa);
-    } 
 
     /*@PutMapping("/{id}")
     public TarefaDTO update(@PathVariable long id, @RequestBody TarefaDTO tarefa){
