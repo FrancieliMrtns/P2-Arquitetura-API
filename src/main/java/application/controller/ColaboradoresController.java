@@ -14,38 +14,34 @@ import application.record.ColaboradorDTO;
 import application.service.ColaboradorService;
 
 @RestController
-
 @RequestMapping("/colaboradores")
 public class ColaboradoresController {
+
     @Autowired
     private ColaboradorService colaboradorSrv;
 
-    @PostMapping("/colaboradores")
-    public ColaboradorDTO insert(@RequestBody ColaboradorDTO colaborador){
+    @PostMapping
+    public ColaboradorDTO insert(@RequestBody ColaboradorDTO colaborador) {
         return colaboradorSrv.insert(colaborador);
     }
-    
-    @GetMapping("/colaboradores")
-    public Iterable<ColaboradorDTO>list(){
+
+    @GetMapping
+    public Iterable<ColaboradorDTO> list() {
         return colaboradorSrv.findAll();
     }
- 
-    
-    @GetMapping("/colaboradores/{id}")
+
+    @GetMapping("/{id}")
     public ColaboradorDTO findOne(@PathVariable long id) {
-        return colaboradorSrv.findById(id); 
+        return colaboradorSrv.findById(id);
     }
 
-    @PutMapping("/colaboradores/{id}")
-    public ColaboradorDTO update(@PathVariable long id, @RequestBody ColaboradorDTO colaborador){
+    @PutMapping("/{id}")
+    public ColaboradorDTO update(@PathVariable long id, @RequestBody ColaboradorDTO colaborador) {
         return colaboradorSrv.update(id, colaborador);
-
     }
 
-    @DeleteMapping("/colaboradores/{id}")
-    public void delete(@PathVariable long id){
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) {
         colaboradorSrv.deleteById(id);
     }
-
-    
 }
