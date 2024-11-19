@@ -1,9 +1,9 @@
 #@url = https://8080-marcoweb-apiquiz20242-us2tnb4btx5.ws-us116.gitpod.io
 
-@url = https://8080-francielimr-p2arquitetu-epa45eml21a.ws-us116.gitpod.io
-
+@url = https://8080-francielimr-p2arquitetu-16m4d4uzsjp.ws-us116.gitpod.io
+ 
 ##
-
+ 
 POST {{url}}/colaboradores
 Content-Type: application/json
 

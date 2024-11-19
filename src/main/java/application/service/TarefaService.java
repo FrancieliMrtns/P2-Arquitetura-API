@@ -1,15 +1,19 @@
 package application.service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
+import application.model.Colaborador;
 import application.model.Tarefa;
 import application.record.TarefaDTO;
+import application.repository.ColaboradorRepository;
 import application.repository.TarefaRepository;
 
 @Service
@@ -17,47 +21,50 @@ public class TarefaService {
     @Autowired
     private TarefaRepository tarefaRepo;
 
-    public List<TarefaDTO> findAll(){
+    @Autowired
+    private ColaboradorRepository colaboradorRepo;
+
+    public List<TarefaDTO> findAll() {
         return tarefaRepo.findAll().stream()
-            .map(tarefa -> new TarefaDTO(tarefa.getId(), tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getDataCriacao(), tarefa.getDataInicio(), tarefa.getDataConclusao()))
+            .map(tarefa -> new TarefaDTO(
+                tarefa.getId(),
+                tarefa.getTitulo(),
+                tarefa.getDescricao(),
+                tarefa.getDataCriacao(),
+                tarefa.getDataInicio(),
+                tarefa.getDataConclusao()
+            ))
             .collect(Collectors.toList());
     }
 
-    @Transactional
-    public TarefaDTO atualizarTarefa(Long id, TarefaDTO novosDados) {
-        Optional<Tarefa> tarefaExistenteOpt = tarefaRepo.findById(id);
-        
-        if (tarefaExistenteOpt.isPresent()) {
-            Tarefa tarefaExistente = tarefaExistenteOpt.get();
-            tarefaExistente.setTitulo(novosDados.titulo());
-            tarefaExistente.setDescricao(novosDados.descricao());
-            tarefaExistente.setDataInicio(novosDados.dataInicio());
-            tarefaExistente.setDataConclusao(novosDados.dataConclusao());
+    public TarefaDTO findByIdWithColaboradores(Long id) {
+        Tarefa tarefa = tarefaRepo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tarefa não encontrada"));
 
-            Tarefa tarefaAtualizada = tarefaRepo.save(tarefaExistente);
-            
-            return new TarefaDTO(
-                tarefaAtualizada.getId(),
-                tarefaAtualizada.getTitulo(),
-                tarefaAtualizada.getDescricao(),
-                tarefaAtualizada.getDataCriacao(),
-                tarefaAtualizada.getDataInicio(),
-                tarefaAtualizada.getDataConclusao()
-            );
-        } else {
-            throw new RuntimeException("Tarefa não encontrada com o ID: " + id);
-        }
-    }
+        return new TarefaDTO(
+            tarefa.getId(),
+            tarefa.getTitulo(),
+            tarefa.getDescricao(),
+            tarefa.getDataCriacao(),
+            tarefa.getDataInicio(),
+            tarefa.getDataConclusao()
 
+        );}
     @Transactional
-    public TarefaDTO inserirTarefa(TarefaDTO tarefaDTO) {
+    public TarefaDTO insertWithColaboradores(TarefaDTO tarefaDTO) {
         Tarefa novaTarefa = new Tarefa();
         novaTarefa.setTitulo(tarefaDTO.titulo());
         novaTarefa.setDescricao(tarefaDTO.descricao());
+        novaTarefa.setDataCriacao(tarefaDTO.dataCriacao());
         novaTarefa.setDataInicio(tarefaDTO.dataInicio());
         novaTarefa.setDataConclusao(tarefaDTO.dataConclusao());
-        novaTarefa.setDataCriacao(tarefaDTO.dataCriacao()); 
 
+        Set<Colaborador> colaboradores = tarefaDTO.colaboradores().stream()
+            .map(dto -> colaboradorRepo.findById(dto.id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Colaborador não encontrado")))
+            .collect(Collectors.toSet());
+
+        novaTarefa.setColaboradores(colaboradores);
 
         Tarefa tarefaSalva = tarefaRepo.save(novaTarefa);
 
@@ -71,5 +78,31 @@ public class TarefaService {
         );
     }
 
+    @Transactional
+    public TarefaDTO updateWithColaboradores(Long id, TarefaDTO tarefaDTO) {
+        Tarefa tarefa = tarefaRepo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tarefa não encontrada"));
+
+        tarefa.setTitulo(tarefaDTO.titulo());
+        tarefa.setDescricao(tarefaDTO.descricao());
+        tarefa.setDataInicio(tarefaDTO.dataInicio());
+        tarefa.setDataConclusao(tarefaDTO.dataConclusao());
+
+        Set<Colaborador> colaboradores = tarefaDTO.colaboradores().stream()
+        .map(dto -> colaboradorRepo.findById(dto.id())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Colaborador não encontrado")))
+        .collect(Collectors.toSet()); // Corrigido: removido o ponto e vírgula no meio da expressão
+
+        Tarefa tarefaAtualizada = tarefaRepo.save(tarefa);
+
+        return new TarefaDTO(
+            tarefaAtualizada.getId(),
+            tarefaAtualizada.getTitulo(),
+            tarefaAtualizada.getDescricao(),
+            tarefaAtualizada.getDataCriacao(),
+            tarefaAtualizada.getDataInicio(),
+            tarefaAtualizada.getDataConclusao()
+        );
+    }
 }
 

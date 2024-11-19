@@ -1,9 +1,16 @@
 package application.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import application.record.ColaboradorDTO;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,15 +27,7 @@ public class Colaborador {
     private String nome;
 
     @ManyToMany
-    @JoinTable(
-        name = "colaboradores_varias_tarefas",
-        joinColumns = @JoinColumn(name = "id_colaborador"),
-        inverseJoinColumns = @JoinColumn(name = "id_tarefa")
-    )
-    private Set<Tarefa> tarefas;
-    
-
-    public Colaborador() {}
+    private Set<Tarefa> tarefas = new HashSet<>();
 
     public Colaborador(ColaboradorDTO dados) {
         this.id = dados.id();

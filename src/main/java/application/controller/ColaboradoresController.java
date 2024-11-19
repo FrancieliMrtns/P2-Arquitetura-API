@@ -1,5 +1,5 @@
 package application.controller;
-
+/* 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,9 +32,8 @@ public class ColaboradoresController {
 
     @GetMapping("/{id}")
     public ColaboradorDTO findOne(@PathVariable long id) {
-        return colaboradorSrv.findById(id);
+        return colaboradorSrv.findByIdWithTasks(id); // Altere o service para incluir tarefas.
     }
-
     @PutMapping("/{id}")
     public ColaboradorDTO update(@PathVariable long id, @RequestBody ColaboradorDTO colaborador) {
         return colaboradorSrv.update(id, colaborador);
@@ -45,3 +44,4 @@ public class ColaboradoresController {
         colaboradorSrv.deleteById(id);
     }
 }
+*/

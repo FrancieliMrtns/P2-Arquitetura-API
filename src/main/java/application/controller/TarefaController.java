@@ -11,38 +11,40 @@ import application.record.TarefaDTO;
 import application.service.TarefaService;
 
 
+
 @RestController
 @RequestMapping("/tarefas")
 public class TarefaController {
+
     @Autowired
     private TarefaService tarefaSrv;
 
-    @PostMapping("/tarefas")
-    public TarefaDTO insert(@RequestBody TarefaDTO tarefa){
-        return tarefaSrv.inserirTarefa(tarefa);
+    @PostMapping
+    public TarefaDTO insert(@RequestBody TarefaDTO tarefa) {
+        return tarefaSrv.insertWithColaboradores(tarefa); // Adiciona vínculo de colaboradores.
     }
 
-    @GetMapping("/tarefas")
-    public Iterable<TarefaDTO> findAll(){
+    @GetMapping
+    public Iterable<TarefaDTO> findAll() {
         return tarefaSrv.findAll();
     }
 
-    /*@GetMapping("/{id}")
-    public TarefaDTO findOne(@PathVariable long id){
-        return tarefaSrv.findById(id);
+
+    /*     @GetMapping("/{id}")
+    public TarefaDTO findOne(@PathVariable long id) {
+        return tarefaSrv.findByIdWithColaboradores(id); // Inclui detalhes dos colaboradores.
+    }
+
+    @PutMapping("/{id}")
+    public TarefaDTO update(@PathVariable long id, @RequestBody TarefaDTO tarefa) {
+        return tarefaSrv.updateWithColaboradores(id, tarefa); // Atualiza com vínculos.
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) {
+        tarefaSrv.deleteById(id);
     }*/
 
-    /*@PutMapping("/{id}")
-    public TarefaDTO update(@PathVariable long id, @RequestBody TarefaDTO tarefa){
-        return tarefaSrv.update(id, tarefa);
-    }*/
-
-
-
-
-
-
-
-
-    
 }
+
+

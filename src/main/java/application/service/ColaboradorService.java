@@ -10,28 +10,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import application.model.Colaborador;
 import application.record.ColaboradorDTO;
+import application.record.TarefaDTO;
 import application.repository.ColaboradorRepository;
+
 @Service
 public class ColaboradorService {
     @Autowired
-    private ColaboradorRepository colaboradorRepo;
 
-    //Esse aqui é um get que chama todos os colaboradores
-    public List<ColaboradorDTO> findAll() {
-        return colaboradorRepo.findAll().stream()
-            .map(colaborador -> new ColaboradorDTO(colaborador.getId(), colaborador.getNome()))
-            .collect(Collectors.toList());
-    }
-
-    //Esse aqui é o get q vai retornar todos os colaboradores e os nomes deles
-    public ColaboradorDTO findById(long id) {
-        Colaborador colaborador = colaboradorRepo.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Colaborador não encontrado"));
-
-        return new ColaboradorDTO(colaborador.getId(), colaborador.getNome());
-    }
-
-    //Esse aqui é to método post
     public ColaboradorDTO insert(ColaboradorDTO colaborador) {
         Colaborador resultado = colaboradorRepo.findByNome(colaborador.nome());
         if (resultado != null) {
