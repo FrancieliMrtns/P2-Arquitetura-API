@@ -1,0 +1,29 @@
+#@url = https://8080-marcoweb-apiquiz20242-us2tnb4btx5.ws-us116.gitpod.io
+
+@url = https://8080-francielimr-p2arquitetu-bdl9rn3y7zr.ws-us116.gitpod.io
+
+//@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgUXVpenplcyIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzMwNzQ3OTY0fQ.leWf1DV4lExlSyJiAOYxTVE1v5fudxN9TX7U4fHrvKc
+
+###
+GET {{url}}/colaboradores
+
+###
+GET {{url}}/tarefas
+
+###
+POST {{url}}/colaboradores
+#Authorization: Bearer {{token}}
+{
+    "name": "Fulano Ciclano"
+}
+
+###
+#DELETE {{url}}/categorias/5ljk
+
+###
+##PUT {{url}}/categorias/10
+#Content-Type: application/json
+
+#{
+    #"nome": "Arquitetura de APIs  - Alterado"
+#}
