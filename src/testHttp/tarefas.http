@@ -53,7 +53,7 @@ Content-Type: application/json
 DELETE {{url}}/tarefa/1
 
 ###
-POST {{url}}/tarefa/3/2
+POST {{url}}/tarefa/3/colaboradores/2
 
 ###
-DELETE {{url}}/tarefa/3/2
+DELETE {{url}}/tarefa/3/colaboradores/2

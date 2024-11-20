@@ -49,11 +49,11 @@ public class TarefaController {
         tarefaService.delete(id);
     }
 
-    @PostMapping("/{tarefaId}/{colaboradorId}")
+    @PostMapping("/{tarefaId}/colaboradores/{colaboradorId}")
     public void insertColaborador(@PathVariable Long tarefaId, @PathVariable Long colaboradorId) {
         tarefaService.insertColaborador(tarefaId, colaboradorId);
     }
-    @DeleteMapping("/{tarefaId}/{colaboradorId}")
+    @DeleteMapping("/{tarefaId}/colaboradores/{colaboradorId}")
     public void deleteColaborador(@PathVariable Long tarefaId, @PathVariable Long colaboradorId) {
         tarefaService.deleteColaborador(tarefaId, colaboradorId);
     }
