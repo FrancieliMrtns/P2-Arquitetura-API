@@ -29,7 +29,7 @@ public class TarefaController {
 
     @GetMapping("/{id}")
     public TarefaDTO findById(@PathVariable long id) {
-        return tarefaService.findByI(id);
+        return tarefaService.findById(id);
     }
 
     @PostMapping

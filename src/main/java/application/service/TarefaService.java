@@ -26,7 +26,7 @@ public class TarefaService {
         return tarefaRepo.findAll().stream().map(TarefaDTO::new).toList();
     }
 
-    public TarefaDTO findByI(Long id){
+    public TarefaDTO findById(Long id){
         Optional<Tarefa> resultado = tarefaRepo.findById(id);
         if (resultado.isEmpty()) {
             throw new ResponseStatusException(

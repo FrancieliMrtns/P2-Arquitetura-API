@@ -1,28 +1,26 @@
-
+@url = http://localhost:8080
+ 
 
 ###
 GET {{url}}/tarefa
-Authorization: Bearer {{token}}
+
 
 ###
 GET {{url}}/tarefa/1
-Authorization: Bearer {{token}}
 
 ###
 POST {{url}}/tarefa
-Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "titulo": "Tarefa X",
-    "descricao": "Descricao Tarefa X",
+    "titulo": "Testandp",
+    "descricao": "Descricao",
     "dataInicio": "2024-08-05",
     "dataConclusao": "2024-09-12"
 }
 
 ###
 POST {{url}}/tarefa
-Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -34,7 +32,6 @@ Content-Type: application/json
 
 ###
 POST {{url}}/tarefa
-Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -46,7 +43,6 @@ Content-Type: application/json
 
 ###
 PUT {{url}}/tarefa/2
-Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -55,11 +51,9 @@ Content-Type: application/json
 
 ###
 DELETE {{url}}/tarefa/3
-Authorization: Bearer {{token}}
 
 ###
 POST {{url}}/tarefa/3/2
-Authorization: Bearer {{token}}
 
 ###
 DELETE {{url}}/tarefa/3/2

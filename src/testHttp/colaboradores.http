@@ -1,22 +1,21 @@
 #@url = https://8080-marcoweb-apiquiz20242-us2tnb4btx5.ws-us116.gitpod.io
 
-@url = https://8080-francielimr-p2arquitetu-v9cmcd35bm3.ws-us116.gitpod.io
+@url = http://localhost:8080
  
 
 ###
 GET {{url}}/colaborador
 
 ###
-GET {{url}}/colaborador/1
+GET {{url}}/colaborador/3
 
 ###
 POST {{url}}/colaborador
 Content-Type: application/json
 
 {
-    "nome": "Fulano Beotrano"
+    "nome": "Fulano 3"
 }
-
 
 ###
 POST {{url}}/colaborador
@@ -31,8 +30,8 @@ PUT {{url}}/colaborador/2
 Content-Type: application/json
 
 {
-    "nome": "Mendes"
+    "nome": "Paulo"
 }
 
 ###
-DELETE {{url}}/colaborador/3
+DELETE {{url}}/colaborador/1

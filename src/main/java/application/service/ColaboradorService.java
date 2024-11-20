@@ -1,6 +1,5 @@
 package application.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ public class ColaboradorService {
     @Autowired
     private ColaboradorRepository colaboradorRepo;
 
-    public List<ColaboradorDTO> findAll() {
+    public Iterable<ColaboradorDTO> findAll() {
         return colaboradorRepo.findAll().stream()
             .map(ColaboradorDTO::new).toList();
     }

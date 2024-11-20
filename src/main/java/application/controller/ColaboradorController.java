@@ -15,7 +15,7 @@ import application.service.ColaboradorService;
 
 @RestController
 @RequestMapping("colaborador")
-public class ColaboradoresController {
+public class ColaboradorController {
 
     @Autowired
     private ColaboradorService colaboradorService;
