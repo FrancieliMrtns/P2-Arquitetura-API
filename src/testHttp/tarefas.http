@@ -1,0 +1,65 @@
+
+
+###
+GET {{url}}/tarefa
+Authorization: Bearer {{token}}
+
+###
+GET {{url}}/tarefa/1
+Authorization: Bearer {{token}}
+
+###
+POST {{url}}/tarefa
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "titulo": "Tarefa X",
+    "descricao": "Descricao Tarefa X",
+    "dataInicio": "2024-08-05",
+    "dataConclusao": "2024-09-12"
+}
+
+###
+POST {{url}}/tarefa
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "titulo": "Tarefa Y",
+    "descricao": "Descricao Tarefa Y",
+    "dataInicio": "2024-04-09",
+    "dataConclusao": "2024-06-20"
+}
+
+###
+POST {{url}}/tarefa
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "titulo": "Tarefa Z",
+    "descricao": "Descricao Tarefa Z",
+    "dataInicio": "2024-11-02",
+    "dataConclusao": "2024-12-12"
+}
+
+###
+PUT {{url}}/tarefa/2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "titulo": "Tarefa Y-A"
+}
+
+###
+DELETE {{url}}/tarefa/3
+Authorization: Bearer {{token}}
+
+###
+POST {{url}}/tarefa/3/2
+Authorization: Bearer {{token}}
+
+###
+DELETE {{url}}/tarefa/3/2
