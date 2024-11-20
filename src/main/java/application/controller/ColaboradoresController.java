@@ -1,5 +1,5 @@
 package application.controller;
-/* 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,34 +14,36 @@ import application.record.ColaboradorDTO;
 import application.service.ColaboradorService;
 
 @RestController
-@RequestMapping("/colaboradores")
+@RequestMapping("colaborador")
 public class ColaboradoresController {
 
     @Autowired
-    private ColaboradorService colaboradorSrv;
-
-    @PostMapping
-    public ColaboradorDTO insert(@RequestBody ColaboradorDTO colaborador) {
-        return colaboradorSrv.insert(colaborador);
-    }
+    private ColaboradorService colaboradorService;
 
     @GetMapping
-    public Iterable<ColaboradorDTO> list() {
-        return colaboradorSrv.findAll();
+    public Iterable<ColaboradorDTO> findAll() {
+        return colaboradorService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ColaboradorDTO findOne(@PathVariable long id) {
-        return colaboradorSrv.findByIdWithTasks(id); // Altere o service para incluir tarefas.
+    public ColaboradorDTO findById(@PathVariable long id) {
+        return colaboradorService.findById(id);
     }
+
+    @PostMapping
+    public ColaboradorDTO insert(@RequestBody ColaboradorDTO colaboradorDTO) {
+        return colaboradorService.insert(colaboradorDTO);
+    }
+
     @PutMapping("/{id}")
-    public ColaboradorDTO update(@PathVariable long id, @RequestBody ColaboradorDTO colaborador) {
-        return colaboradorSrv.update(id, colaborador);
+    public ColaboradorDTO update(
+            @PathVariable long id,
+            @RequestBody ColaboradorDTO colaboradorDTO) {
+        return colaboradorService.update(id, colaboradorDTO);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable long id) {
-        colaboradorSrv.deleteById(id);
+        colaboradorService.delete(id);
     }
 }
-*/
