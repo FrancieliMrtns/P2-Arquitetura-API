@@ -1,7 +1,7 @@
 package application.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,40 +10,48 @@ import org.springframework.web.server.ResponseStatusException;
 
 import application.model.Colaborador;
 import application.record.ColaboradorDTO;
-import application.record.TarefaDTO;
 import application.repository.ColaboradorRepository;
 
 @Service
 public class ColaboradorService {
     @Autowired
+    private ColaboradorRepository colaboradorRepo;
 
-    public ColaboradorDTO insert(ColaboradorDTO colaborador) {
-        Colaborador resultado = colaboradorRepo.findByNome(colaborador.nome());
-        if (resultado != null) {
+    public List<ColaboradorDTO> findAll() {
+        return colaboradorRepo.findAll().stream()
+            .map(ColaboradorDTO::new).toList();
+    }
+    public ColaboradorDTO findById(long id) {
+        Optional<Colaborador> resultado = colaboradorRepo.findById(id);
+        if (resultado.isEmpty()) {
             throw new ResponseStatusException(
-                HttpStatus.CONFLICT, "Colaborador já existente."
-            );
+                    HttpStatus.NOT_FOUND, "Não foi possível localizar o colaborador :( ");
         }
-
-        Colaborador novoColaborador = new Colaborador(colaborador);
-        colaboradorRepo.save(novoColaborador);
-        return colaborador;
+        return new ColaboradorDTO(resultado.get());
     }
 
-    public ColaboradorDTO update(long id, ColaboradorDTO colaborador) {
-        Colaborador existingColaborador = colaboradorRepo.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Colaborador não encontrado"));
-
-        existingColaborador.setNome(colaborador.nome());
-        colaboradorRepo.save(existingColaborador);
-        return new ColaboradorDTO(existingColaborador.getId(), existingColaborador.getNome());
+    public ColaboradorDTO insert(ColaboradorDTO colaboradorDTO) {
+        Colaborador colaborador = new Colaborador(colaboradorDTO);
+        Colaborador insertColaborador = colaboradorRepo.save(colaborador);
+        return new ColaboradorDTO(insertColaborador);
     }
 
-    public void deleteById(long id) {
+    public ColaboradorDTO update(long id, ColaboradorDTO colaboradorDTO) {
         if (!colaboradorRepo.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Colaborador não encontrado");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Não foi possível localizar o colaborador :( ");
         }
+        Colaborador novo = new Colaborador(colaboradorDTO);
+        novo.setId(id);
+        Colaborador atualizado = colaboradorRepo.save(novo);
+        return new ColaboradorDTO(atualizado);
+    }
 
+    public void delete(long id) {
+        if (!colaboradorRepo.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Não foi possível localizar o colaborador :( ");
+        }
         colaboradorRepo.deleteById(id);
     }
 }

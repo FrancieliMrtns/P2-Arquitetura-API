@@ -1,13 +1,11 @@
 package application.service;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import application.model.Colaborador;
@@ -24,85 +22,73 @@ public class TarefaService {
     @Autowired
     private ColaboradorRepository colaboradorRepo;
 
-    public List<TarefaDTO> findAll() {
-        return tarefaRepo.findAll().stream()
-            .map(tarefa -> new TarefaDTO(
-                tarefa.getId(),
-                tarefa.getTitulo(),
-                tarefa.getDescricao(),
-                tarefa.getDataCriacao(),
-                tarefa.getDataInicio(),
-                tarefa.getDataConclusao()
-            ))
-            .collect(Collectors.toList());
+    public Iterable<TarefaDTO> findAll() {
+        return tarefaRepo.findAll().stream().map(TarefaDTO::new).toList();
     }
 
-    public TarefaDTO findByIdWithColaboradores(Long id) {
-        Tarefa tarefa = tarefaRepo.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tarefa não encontrada"));
-
-        return new TarefaDTO(
-            tarefa.getId(),
-            tarefa.getTitulo(),
-            tarefa.getDescricao(),
-            tarefa.getDataCriacao(),
-            tarefa.getDataInicio(),
-            tarefa.getDataConclusao()
-
-        );}
-    @Transactional
-    public TarefaDTO insertWithColaboradores(TarefaDTO tarefaDTO) {
-        Tarefa novaTarefa = new Tarefa();
-        novaTarefa.setTitulo(tarefaDTO.titulo());
-        novaTarefa.setDescricao(tarefaDTO.descricao());
-        novaTarefa.setDataCriacao(tarefaDTO.dataCriacao());
-        novaTarefa.setDataInicio(tarefaDTO.dataInicio());
-        novaTarefa.setDataConclusao(tarefaDTO.dataConclusao());
-
-        Set<Colaborador> colaboradores = tarefaDTO.colaboradores().stream()
-            .map(dto -> colaboradorRepo.findById(dto.id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Colaborador não encontrado")))
-            .collect(Collectors.toSet());
-
-        novaTarefa.setColaboradores(colaboradores);
-
-        Tarefa tarefaSalva = tarefaRepo.save(novaTarefa);
-
-        return new TarefaDTO(
-            tarefaSalva.getId(),
-            tarefaSalva.getTitulo(),
-            tarefaSalva.getDescricao(),
-            tarefaSalva.getDataCriacao(),
-            tarefaSalva.getDataInicio(),
-            tarefaSalva.getDataConclusao()
-        );
+    public TarefaDTO findByI(Long id){
+        Optional<Tarefa> resultado = tarefaRepo.findById(id);
+        if (resultado.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Não foi possível localizar a tarefa :( ");
+        }
+        return new TarefaDTO(resultado.get());
     }
 
-    @Transactional
-    public TarefaDTO updateWithColaboradores(Long id, TarefaDTO tarefaDTO) {
-        Tarefa tarefa = tarefaRepo.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tarefa não encontrada"));
+    public TarefaDTO insert(TarefaDTO tarefaDTO) {
+        Tarefa tarefa = new Tarefa(tarefaDTO);
+        tarefa.setDataCriacao(LocalDate.now());
+        Tarefa insertTarefa = tarefaRepo.save(tarefa);
+        return new TarefaDTO(insertTarefa);
+    }
 
-        tarefa.setTitulo(tarefaDTO.titulo());
-        tarefa.setDescricao(tarefaDTO.descricao());
-        tarefa.setDataInicio(tarefaDTO.dataInicio());
-        tarefa.setDataConclusao(tarefaDTO.dataConclusao());
+    public TarefaDTO update(long id, TarefaDTO tarefaDTO) {
+        if (!tarefaRepo.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Não foi possível localizar a tarefa :( ");
+        }
+        Tarefa novo = new Tarefa(tarefaDTO);
+        novo.setId(id);
+        Tarefa atualizado = tarefaRepo.save(novo);
+        return new TarefaDTO(atualizado);
+    }
 
-        Set<Colaborador> colaboradores = tarefaDTO.colaboradores().stream()
-        .map(dto -> colaboradorRepo.findById(dto.id())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Colaborador não encontrado")))
-        .collect(Collectors.toSet()); // Corrigido: removido o ponto e vírgula no meio da expressão
+    public void delete(long id) {
+        if (!tarefaRepo.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Não foi possível localizar a tarefa :( ");
+        }
+        tarefaRepo.deleteById(id);
+    }
 
-        Tarefa tarefaAtualizada = tarefaRepo.save(tarefa);
+    public void insertColaborador(Long tarefaId, Long colaboradorId) {
+        Tarefa tarefa = tarefaRepo.findById(tarefaId).orElse(null);
+        if (tarefa == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível localizar a tarefa :( ");
+        }
 
-        return new TarefaDTO(
-            tarefaAtualizada.getId(),
-            tarefaAtualizada.getTitulo(),
-            tarefaAtualizada.getDescricao(),
-            tarefaAtualizada.getDataCriacao(),
-            tarefaAtualizada.getDataInicio(),
-            tarefaAtualizada.getDataConclusao()
-        );
+        Colaborador colaborador = colaboradorRepo.findById(colaboradorId).orElse(null);
+        if (colaborador == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível localizar o colaborador :( ");
+        }
+
+        tarefa.getColaborador().add(colaborador);
+        tarefaRepo.save(tarefa);
+    }
+    public void deleteColaborador(Long tarefaId, Long colaboradorId) {
+        Tarefa tarefa = tarefaRepo.findById(tarefaId).orElse(null);
+        if (tarefa == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível localizar a tarefa :( ");
+        }
+
+        Colaborador colaborador = colaboradorRepo.findById(colaboradorId).orElse(null);
+        if (colaborador == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível localizar o colaborador :( ");
+        }
+
+        tarefa.getColaborador().remove(colaborador);
+        tarefaRepo.save(tarefa);
+
     }
 }
 
