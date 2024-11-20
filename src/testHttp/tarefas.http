@@ -42,7 +42,7 @@ Content-Type: application/json
 }
 
 ###
-PUT {{url}}/tarefa/2
+PUT {{url}}/tarefa/1
 Content-Type: application/json
 
 {
@@ -50,7 +50,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{url}}/tarefa/3
+DELETE {{url}}/tarefa/1
 
 ###
 POST {{url}}/tarefa/3/2

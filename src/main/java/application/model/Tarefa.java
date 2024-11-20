@@ -15,12 +15,14 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "tarefas")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Tarefa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

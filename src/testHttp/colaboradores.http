@@ -7,14 +7,14 @@
 GET {{url}}/colaborador
 
 ###
-GET {{url}}/colaborador/3
+GET {{url}}/colaborador/1
 
 ###
 POST {{url}}/colaborador
 Content-Type: application/json
 
 {
-    "nome": "Fulano 3"
+    "nome": "Fulano"
 }
 
 ###
